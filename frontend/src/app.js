@@ -4,7 +4,14 @@ let quill;
 
 document.addEventListener('DOMContentLoaded', async () => {
     quill = new Quill('#editor', {
-        theme: 'snow'
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, false] }],
+                ['bold', 'italic', 'underline'],
+                ['image', 'code-block']
+            ]
+        }
     });
 
     const newPostBtn = document.getElementById('newPostBtn');
@@ -14,6 +21,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     newPostBtn.addEventListener('click', () => {
         postForm.classList.toggle('hidden');
+        if (!postForm.classList.contains('hidden')) {
+            postForm.style.opacity = '0';
+            setTimeout(() => {
+                postForm.style.opacity = '1';
+            }, 50);
+        }
     });
 
     blogForm.addEventListener('submit', async (e) => {
@@ -46,6 +59,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div class="post-body">${post.body}</div>
                 `;
                 postsSection.appendChild(postElement);
+                setTimeout(() => {
+                    postElement.style.opacity = '1';
+                    postElement.style.transform = 'translateY(0)';
+                }, 50);
             });
         } catch (error) {
             console.error('Error fetching posts:', error);
